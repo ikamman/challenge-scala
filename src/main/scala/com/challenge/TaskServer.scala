@@ -1,16 +1,11 @@
 package com.challenge
-import cats._
-import cats.implicits._
 import cats.effect._
+import com.challenge.FetchService
 import com.comcast.ip4s._
-import org.http4s.ember.server.EmberServerBuilder
-import org.http4s.implicits._
-import org.http4s.server.middleware.Logger
 import org.http4s.ember.client.EmberClientBuilder
+import org.http4s.ember.server.EmberServerBuilder
 import pureconfig.ConfigSource
 import pureconfig.generic.auto._
-import com.challenge.FetchService
-import org.http4s.server.websocket.WebSocketBuilder2
 
 object TaskServer {
 

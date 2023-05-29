@@ -1,14 +1,16 @@
 package com.challenge
 
 import cats._
-import cats.implicits._
 import cats.effect._
 import cats.effect.std._
-import fs2._
+import cats.implicits._
 import com.challenge.FetchService
-import Api._
+import fs2._
+
 import java.util.concurrent.ConcurrentHashMap
 import scala.jdk.CollectionConverters._
+
+import Api._
 
 trait TaskService[F[_]] {
   def schedule(task: Api.Task): F[Api.TaskId]
@@ -23,16 +25,14 @@ object TaskService {
     for {
       queue <- Queue.unbounded[F, Api.Task]
       cache <- new ConcurrentHashMap[TaskId, TaskWorker[F]]().asScala.pure[F]
-      mutex <- Mutex[F]
     } yield new TaskService[F] {
 
-      def schedule(task: Api.Task): F[Api.TaskId] = mutex.lock.surround {
+      def schedule(task: Api.Task): F[Api.TaskId] =
         for {
           worker <- TaskWorker.create[F](task, fetchService.stream)
           _ <- cache.addOne((task.id, worker)).pure[F]
           _ <- queue.offer(task)
         } yield task.id
-      }
 
       def get(id: Api.TaskId): F[Result[Stream[F, Api.TaskStats]]] =
         cache.get(id) match {

@@ -1,9 +1,9 @@
 package com.challenge
 
-import Api._
-import cats._
-import cats.implicits._
 import cats.effect._
+import cats.implicits._
+
+import Api._
 
 trait ApiService[F[_]] {
   def newTask(req: NewTask): F[TaskId]

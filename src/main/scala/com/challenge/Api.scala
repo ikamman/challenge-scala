@@ -1,13 +1,8 @@
 package com.challenge
 
-import io.circe.generic.auto._
+import cats.Applicative
 import cats.effect.std.UUIDGen
 import cats.implicits._
-import cats.Monad
-import cats.kernel.Eq
-import cats.instances.boolean
-import cats.FlatMap
-import cats.Applicative
 
 object Api {
   import enumeratum._

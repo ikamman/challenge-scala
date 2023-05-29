@@ -1,16 +1,11 @@
 package com.challenge
 
-import io.circe.Json
-import io.circe.jawn.CirceSupportParser
-import org.http4s.Request
-import org.http4s.Method
-import org.http4s.Uri
-import cats.effect.kernel.Async
-import org.http4s.client.Client
-import fs2.Stream
 import fs2.Pipe
-import org.typelevel.log4cats.Logger
-import org.typelevel.log4cats.slf4j.Slf4jLogger
+import fs2.Stream
+import org.http4s.Method
+import org.http4s.Request
+import org.http4s.Uri
+import org.http4s.client.Client
 
 trait FetchService[F[_]] {
   def stream(uri: String): Stream[F, Map[String, String]]
@@ -32,10 +27,8 @@ object FetchService {
         .drop(1)
         .map(_._2)
 
-  def impl[F[_]: Async](client: Client[F]): FetchService[F] =
+  def impl[F[_]](client: Client[F]): FetchService[F] =
     new FetchService[F] {
-
-      val logger: Logger[F] = Slf4jLogger.getLogger[F]
 
       def stream(uri: String): Stream[F, Map[String, String]] = {
         val req =

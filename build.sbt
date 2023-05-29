@@ -12,10 +12,16 @@ val MonocleVersion = "3.1.0"
 ThisBuild / organization := "com.elisa"
 ThisBuild / version := "0.0.1-SNAPSHOT"
 ThisBuild / scalaVersion := "2.13.10"
+ThisBuild / semanticdbEnabled := true
+ThisBuild / semanticdbVersion := scalafixSemanticdb.revision
 
 Global / scalacOptions ++= Seq(
   "-Ymacro-annotations",
   "-Ywarn-unused"
+)
+
+ThisBuild / scalafixDependencies ++= Seq(
+  "com.github.liancheng" %% "organize-imports" % "0.6.0"
 )
 
 lazy val commonSettings = Seq(

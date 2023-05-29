@@ -1,25 +1,26 @@
 package com.challenge
 
 import cats._
-import cats.implicits._
 import cats.effect._
-import io.circe.parser.{parse => parseJson}
-import fs2.concurrent.SignallingRef
-import fs2.Stream
+import cats.effect.kernel.Resource.ExitCase.Canceled
+import cats.effect.kernel.Resource.ExitCase.Errored
+import cats.effect.kernel.Resource.ExitCase.Succeeded
+import cats.implicits._
 import fs2.Pipe
+import fs2.Stream
+import fs2.concurrent.SignallingRef
+import fs2.io.file.Files
+import fs2.io.file.Path
+import fs2.text
+import io.circe.Json
+import io.circe.parser.{parse => parseJson}
+import monocle.macros.syntax.lens._
 import org.typelevel.log4cats.Logger
 import org.typelevel.log4cats.slf4j.Slf4jLogger
 
-import TaskWorker._
-import io.circe.Json
-import fs2.text
-import fs2.io.file.Files
-import fs2.io.file.Path
 import scala.concurrent.duration._
-import monocle.macros.syntax.lens._
-import cats.effect.kernel.Resource.ExitCase.Succeeded
-import cats.effect.kernel.Resource.ExitCase.Errored
-import cats.effect.kernel.Resource.ExitCase.Canceled
+
+import TaskWorker._
 
 case class TaskWorker[F[_]: Async](
     task: Api.Task,
